@@ -2,11 +2,12 @@
 import React from 'react';
 import { ButtonProps } from '../types';
 
-const Button: React.FC<ButtonProps> = ({ onClick, children, className = '', disabled = false }) => {
+const Button: React.FC<ButtonProps> = ({ onClick, children, className = '', disabled = false, type = 'button' }) => {
   return (
     <button
       onClick={onClick}
       disabled={disabled}
+      type={type} // Pass the type prop here
       className={`
         px-6 py-3 rounded-lg font-semibold
         bg-blue-600 text-white

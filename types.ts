@@ -70,6 +70,7 @@ export interface ButtonProps {
   children: React.ReactNode;
   className?: string;
   disabled?: boolean;
+  type?: 'button' | 'submit' | 'reset'; // Added 'type' property
 }
 
 /**
@@ -119,4 +120,39 @@ export interface SliderProps {
   onChange: (value: string) => void;
   options: string[]; // Array of string values for the slider
   className?: string;
+}
+
+/**
+ * Represents a hot business opportunity discovered by the AI.
+ */
+export interface HotOpportunity {
+  id: string;
+  category: string;
+  description: string;
+  monthlySearchVolume: string;
+  competitorsAnalyzed: number;
+  platformMentioned: string;
+  growthPotential: string;
+  easeOfEntry: 'Low' | 'Medium' | 'High';
+  trendImpact: string[];
+  keyPlayers: string[];
+  score: number; // New field for overall score
+}
+
+/**
+ * Props for the HotOpportunities component.
+ */
+export interface HotOpportunitiesProps {
+  opportunities: HotOpportunity[];
+  onViewDetails: (opportunity: HotOpportunity) => void;
+  lastUpdateDate: string;
+}
+
+/**
+ * Props for the OpportunityDetailModal component.
+ */
+export interface OpportunityDetailModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  opportunity: HotOpportunity | null;
 }

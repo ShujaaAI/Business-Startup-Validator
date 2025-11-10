@@ -69,9 +69,10 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit, isLoading }) => {
         onChange={setSkills}
       />
 
+      {/* Add missing 'onClick' prop to satisfy ButtonProps interface */}
       <Button
-        onClick={() => {}} // onClick handled by form onSubmit
-        type="submit"
+        type="submit" // Correctly setting the type to 'submit'
+        onClick={handleSubmit}
         disabled={isLoading}
         className="w-full"
       >

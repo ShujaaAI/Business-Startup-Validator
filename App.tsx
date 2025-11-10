@@ -6,8 +6,10 @@ import Button from './components/Button';
 import Input from './components/Input';
 import LoadingSpinner from './components/LoadingSpinner';
 import IdeaCard from './components/IdeaCard';
+import HotOpportunities from './components/HotOpportunities'; // New import
+import OpportunityDetailModal from './components/OpportunityDetailModal'; // New import
 import { generateStartupIdeas, generateMiniBusinessPlan } from './services/geminiService';
-import { UserInput, StartupIdea, GeminiIdeaResponse } from './types';
+import { UserInput, StartupIdea, GeminiIdeaResponse, HotOpportunity } from './types'; // Updated import
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
@@ -27,8 +29,101 @@ function App() {
   const [miniBusinessPlan, setMiniBusinessPlan] = useState<string | null>(null);
   const [currentIdeaTitleForPlan, setCurrentIdeaTitleForPlan] = useState<string | null>(null);
 
+  // New state for Hot Business Opportunities
+  const [hotOpportunities, setHotOpportunities] = useState<HotOpportunity[]>([]);
+  const [showHotOpportunitiesModal, setShowHotOpportunitiesModal] = useState<boolean>(false);
+  const [selectedHotOpportunity, setSelectedHotOpportunity] = useState<HotOpportunity | null>(null);
+  const [lastOpportunitiesUpdate, setLastOpportunitiesUpdate] = useState<string>('');
+
+
   const ideaListRef = useRef<HTMLDivElement>(null); // Ref for the content to be exported to PDF
   const ideaSectionRef = useRef<HTMLDivElement>(null); // Ref for the Idea section to scroll to
+
+  // Dummy data for Hot Business Opportunities
+  useEffect(() => {
+    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    setLastOpportunitiesUpdate(today);
+    setHotOpportunities([
+      {
+        id: '1',
+        category: 'AI-Powered Content Creation',
+        description: 'Leveraging AI to generate engaging content for various platforms, including blogs, social media, and marketing copy.',
+        monthlySearchVolume: '1.2M+',
+        competitorsAnalyzed: 25,
+        platformMentioned: 'GPT-4, Midjourney, Jasper AI',
+        growthPotential: 'Very High',
+        easeOfEntry: 'Medium',
+        trendImpact: ['Generative AI Boom', 'Content Marketing Demand', 'Efficiency Tools'],
+        keyPlayers: ['Jasper', 'Copy.ai', 'Writesonic'],
+        score: 92,
+      },
+      {
+        id: '2',
+        category: 'Sustainable E-commerce Packaging',
+        description: 'Providing eco-friendly and biodegradable packaging solutions for online retailers to reduce environmental impact.',
+        monthlySearchVolume: '800K+',
+        competitorsAnalyzed: 18,
+        platformMentioned: 'Shopify, Amazon, Etsy',
+        growthPotential: 'High',
+        easeOfEntry: 'Medium',
+        trendImpact: ['Eco-consciousness', 'Supply Chain Optimization', 'Green Consumerism'],
+        keyPlayers: ['EcoEnclose', 'Noissue', 'PulpWorks'],
+        score: 88,
+      },
+      {
+        id: '3',
+        category: 'Personalized Wellness Tech',
+        description: 'Developing wearable tech and apps that offer tailored health and wellness plans based on individual data.',
+        monthlySearchVolume: '1.5M+',
+        competitorsAnalyzed: 30,
+        platformMentioned: 'Apple Health, Fitbit, Oura Ring',
+        growthPotential: 'Very High',
+        easeOfEntry: 'High',
+        trendImpact: ['Biohacking', 'Preventative Healthcare', 'Data Privacy'],
+        keyPlayers: ['Eight Sleep', 'Levels Health', 'InsideTracker'],
+        score: 95,
+      },
+      {
+        id: '4',
+        category: 'Remote Work Productivity Tools',
+        description: 'Creating software and services that enhance collaboration, focus, and efficiency for distributed teams.',
+        monthlySearchVolume: '950K+',
+        competitorsAnalyzed: 22,
+        platformMentioned: 'Slack, Zoom, Asana',
+        growthPotential: 'High',
+        easeOfEntry: 'Medium',
+        trendImpact: ['Hybrid Work Models', 'Digital Nomadism', 'Employee Engagement'],
+        keyPlayers: ['Notion', 'ClickUp', 'Miro'],
+        score: 89,
+      },
+      {
+        id: '5',
+        category: 'Hyper-local Food Delivery',
+        description: 'Offering on-demand delivery services for local farmers markets, specialty stores, and home-cooked meals within a small geographic area.',
+        monthlySearchVolume: '600K+',
+        competitorsAnalyzed: 15,
+        platformMentioned: 'DoorDash, Uber Eats, Grubhub (local variants)',
+        growthPotential: 'Medium',
+        easeOfEntry: 'Low',
+        trendImpact: ['Support Local', 'Convenience Economy', 'Niche Markets'],
+        keyPlayers: ['FarmDrop', 'Good Eggs', 'Local Food Hubs'],
+        score: 80,
+      },
+      {
+        id: '6',
+        category: 'Gamified Education Platforms',
+        description: 'Developing interactive learning platforms that use game-like elements to engage students across various subjects and age groups.',
+        monthlySearchVolume: '1.1M+',
+        competitorsAnalyzed: 28,
+        platformMentioned: 'Duolingo, Khan Academy, Minecraft Education',
+        growthPotential: 'High',
+        easeOfEntry: 'Medium',
+        trendImpact: ['EdTech Innovation', 'Personalized Learning', 'Screen Time Engagement'],
+        keyPlayers: ['Kahoot!', 'Classcraft', 'Prodigy'],
+        score: 90,
+      },
+    ]);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('favoriteIdeas', JSON.stringify(favoriteIdeas));
@@ -141,6 +236,16 @@ function App() {
     }
   }, []);
 
+  const handleViewHotOpportunityDetails = useCallback((opportunity: HotOpportunity) => {
+    setSelectedHotOpportunity(opportunity);
+    setShowHotOpportunitiesModal(true);
+  }, []);
+
+  const handleCloseHotOpportunitiesModal = useCallback(() => {
+    setShowHotOpportunitiesModal(false);
+    setSelectedHotOpportunity(null);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
       <header className="py-4 shadow-md bg-white dark:bg-gray-800 sticky top-0 z-20">
@@ -149,6 +254,7 @@ function App() {
           <nav>
             <ul className="flex space-x-6">
               <li><a href="#home" onClick={() => scrollToSection('home')} className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 font-medium">Home</a></li>
+              <li><a href="#opportunities" onClick={() => scrollToSection('opportunities')} className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 font-medium">Opportunities</a></li> {/* New nav link */}
               <li><a href="#idea" onClick={() => scrollToSection('idea')} className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 font-medium">Idea</a></li>
               <li><a href="#pricing" onClick={() => scrollToSection('pricing')} className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 font-medium">Pricing</a></li>
               <li><a href="#newsletter" onClick={() => scrollToSection('newsletter')} className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 font-medium">Newsletter</a></li>
@@ -232,6 +338,18 @@ function App() {
             </div>
           </div>
         </section>
+
+        {/* Hot Business Opportunities Section */}
+        <section id="opportunities" className="py-12 bg-gray-50 dark:bg-gray-850 rounded-xl shadow-inner mt-16 text-center">
+          <h2 className="text-4xl font-extrabold text-gray-900 dark:text-gray-100 mb-4">Hot Business Opportunities Discovered Today</h2>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-8">Last Updated: {lastOpportunitiesUpdate}</p>
+          <HotOpportunities
+            opportunities={hotOpportunities}
+            onViewDetails={handleViewHotOpportunityDetails}
+            lastUpdateDate={lastOpportunitiesUpdate}
+          />
+        </section>
+
 
         {/* Idea Generation Section */}
         <section id="idea" ref={ideaSectionRef} className="py-12">
@@ -419,6 +537,12 @@ function App() {
           &copy; {new Date().getFullYear()} Startup Validator. All rights reserved.
         </div>
       </footer>
+
+      <OpportunityDetailModal
+        isOpen={showHotOpportunitiesModal}
+        onClose={handleCloseHotOpportunitiesModal}
+        opportunity={selectedHotOpportunity}
+      />
     </div>
   );
 }
