@@ -462,7 +462,7 @@ function App() {
             {/* Basic Plan */}
             <div className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg border-t-4 border-blue-500 transform hover:scale-105 transition-transform duration-300">
               <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4">Basic</h3>
-              <p className="text-5xl font-extrabold text-gray-900 dark:text-gray-100 mb-6">$0<span className="text-lg font-normal text-gray-500 dark:text-gray-400">/month</span></p>
+              <p className="text-5xl font-extrabold text-gray-900 dark:text-gray-100 mb-6">Ksh. 0<span className="text-lg font-normal text-gray-500 dark:text-gray-400">/month</span></p>
               <ul className="text-gray-700 dark:text-gray-300 text-left mb-8 space-y-2">
                 <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> 5 Idea Generations/month</li>
                 <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> Basic Market Trends</li>
@@ -477,7 +477,7 @@ function App() {
             {/* Pro Plan */}
             <div className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg border-t-4 border-purple-500 transform hover:scale-105 transition-transform duration-300">
               <h3 className="text-2xl font-bold text-purple-600 dark:text-purple-400 mb-4">Pro</h3>
-              <p className="text-5xl font-extrabold text-gray-900 dark:text-gray-100 mb-6">$29<span className="text-lg font-normal text-gray-500 dark:text-gray-400">/month</span></p>
+              <p className="text-5xl font-extrabold text-gray-900 dark:text-gray-100 mb-6">Ksh. 2,999<span className="text-lg font-normal text-gray-500 dark:text-gray-400">/month</span></p>
               <ul className="text-gray-700 dark:text-gray-300 text-left mb-8 space-y-2">
                 <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> Unlimited Idea Generations</li>
                 <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> Advanced Market Trends</li>
@@ -492,7 +492,7 @@ function App() {
             {/* Business Plan */}
             <div className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg border-t-4 border-green-500 transform hover:scale-105 transition-transform duration-300">
               <h3 className="text-2xl font-bold text-green-600 dark:text-green-400 mb-4">Business</h3>
-              <p className="text-5xl font-extrabold text-gray-900 dark:text-gray-100 mb-6">$79<span className="text-lg font-normal text-gray-500 dark:text-gray-400">/month</span></p>
+              <p className="text-5xl font-extrabold text-gray-900 dark:text-gray-100 mb-6">Ksh. 7,999<span className="text-lg font-normal text-gray-500 dark:text-gray-400">/month</span></p>
               <ul className="text-gray-700 dark:text-gray-300 text-left mb-8 space-y-2">
                 <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> All Pro Features</li>
                 <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> Unlimited Mini Business Plans</li>

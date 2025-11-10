@@ -70,9 +70,10 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit, isLoading }) => {
       />
 
       {/* Add missing 'onClick' prop to satisfy ButtonProps interface */}
+      {/* Fix: Provide a no-op function for onClick, as the form's onSubmit will handle the actual submission. */}
       <Button
         type="submit" // Correctly setting the type to 'submit'
-        onClick={handleSubmit}
+        onClick={() => {}} 
         disabled={isLoading}
         className="w-full"
       >
